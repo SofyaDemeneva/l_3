@@ -24,28 +24,15 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install -r requirements.txt  # Установка всех модулей из requirements.txt
+        pip install pytest pytest-html  # Явная установка pytest и pytest-html, если они не указаны в requirements.txt
 
     - name: Run tests and generate report
       run: |
-        pytest --html=report.html --self-contained-html
+        pytest --html=report.html --self-contained-html  # Генерация HTML отчета
 
     - name: Upload report as artifact
       uses: actions/upload-artifact@v3
       with:
         name: test-report
         path: report.html
-
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Upload code as artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: code
-        path: .
